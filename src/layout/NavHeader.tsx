@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { navPages } from "./navData/NavBarPages";
+import logo from "../assets/pill.png";
 
 function NavHeader() {
   const navigate = useNavigate();
@@ -10,7 +11,12 @@ function NavHeader() {
 
   return (
     <div className="border rounded-md bg-white flex flex-row justify-between p-4 items-center shadow-md w-[full] h-[10%] relative overflow-y-auto">
-      <h3 className="font-mono text-xl">Gestão de Receitas</h3>
+      <a href="/homepage">
+        <div className="flex flex-row items-center gap-4 justify-between">
+          <img src={logo} className="h-8 justify-self-center" alt="logo" />
+          <h3 className="font-mono text-xl">Gestão de Receitas</h3>
+        </div>
+      </a>
       <div>
         {navPages.map((val, key) => (
           <a

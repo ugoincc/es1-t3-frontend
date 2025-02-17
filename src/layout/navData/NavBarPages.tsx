@@ -1,4 +1,5 @@
 export const navPages = [
-  { title: "Receitas", link: "/homepage" },
-  { title: "Pacientes", link: "/homepage" },
+  { title: "Receitas", link: "/receitas" },
+  { title: "Pacientes", link: "/pacientes" },
+  { title: "Endereços", link: "/enderecos" },
 ];

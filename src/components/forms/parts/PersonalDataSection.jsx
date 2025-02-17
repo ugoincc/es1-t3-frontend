@@ -1,0 +1,82 @@
+import React from "react";
+function PersonalDataSection({ register, errors }) {
+  return (
+    <>
+      <div className="flex flex-wrap">
+        <div className="w-full text-xl font-bold pt-3 border-t text-gray-800">
+          Dados pessoais
+        </div>
+
+        <div className="w-full md:w-3/4 text-left mb-3 p-1">
+          <label htmlFor="inputName" className="form-label text-black m-1">
+            Nome Completo
+          </label>
+          <input
+            type="text"
+            className="border rounded p-1 bg-gray-100 w-full"
+            id="inputName"
+            {...register("name")}
+          />
+          {errors.name && (
+            <span className="text-red-600 text-sm block mt-1">
+              {errors.name.message}
+            </span>
+          )}
+        </div>
+
+        <div className="w-full md:w-1/4 text-left mb-3 p-1">
+          <label htmlFor="inputCPF" className="form-label text-black m-1">
+            CPF
+          </label>
+          <input
+            type="number"
+            className="border rounded p-1 bg-gray-100 w-full"
+            id="inputCPF"
+            {...register("cpf", { required: "CPF é obrigatório" })}
+          />
+          {errors.cpf && (
+            <span className="text-red-600 text-sm block mt-1">
+              {errors.cpf.message}
+            </span>
+          )}
+        </div>
+
+        <div className="w-full md:w-1/4 text-left mb-3 p-1">
+          <label htmlFor="inputPhone" className="form-label text-black">
+            Telefone
+          </label>
+          <input
+            type="number"
+            className="border rounded p-1 bg-gray-100 w-full"
+            id="inputPhone"
+            {...register("phone", { required: "Telefone é obrigatório" })}
+          />
+          {errors.phone && (
+            <span className="text-red-600 text-sm block mt-1">
+              {errors.phone.message}
+            </span>
+          )}
+        </div>
+
+        <div className="w-full md:w-3/4 text-left mb-3 p-1">
+          <label htmlFor="inputEmail" className="form-label text-black">
+            E-mail
+          </label>
+          <input
+            type="email"
+            className="border rounded p-1 bg-gray-100 w-full"
+            id="inputEmail"
+            {...register("email")}
+          />
+          {errors.email && (
+            <span className="text-red-600 text-sm block mt-1">
+              {errors.email.message}
+            </span>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default PersonalDataSection;
