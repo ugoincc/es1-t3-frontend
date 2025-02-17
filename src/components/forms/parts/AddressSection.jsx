@@ -5,12 +5,15 @@ function AddressSection({ register, errors, setValue }) {
   const { cep, erroCep, endereco, handleCepChange } = useAddress();
 
   useEffect(() => {
-    setValue("cep", cep);
-    setValue("street", endereco.logradouro);
-    setValue("neighborhood", endereco.bairro);
-    setValue("city", endereco.cidade);
-    setValue("state", endereco.estado);
-    setValue("uf", endereco.uf);
+    if (cep && endereco) {
+      setValue("cep", cep);
+      setValue("logradouro", endereco.logradouro);
+      setValue("bairro", endereco.bairro);
+      setValue("cidade", endereco.cidade);
+      setValue("estado", endereco.estado);
+      setValue("uf", endereco.uf);
+      setValue("complemento", endereco.complemento);
+    }
   }, [cep, endereco, setValue]);
 
   return (
@@ -24,7 +27,7 @@ function AddressSection({ register, errors, setValue }) {
           CEP
         </label>
         <input
-          type="number"
+          type="text"
           className="border rounded p-1 bg-gray-100 w-full"
           id="inputZip"
           placeholder="Ex: 85865140"
@@ -41,48 +44,48 @@ function AddressSection({ register, errors, setValue }) {
       </div>
 
       <div className="w-full md:w-1/4 text-start mb-3 p-1">
-        <label htmlFor="inputCity" className="form-label text-black">
+        <label htmlFor="inputCidade" className="form-label text-black">
           Cidade
         </label>
         <input
           type="text"
           className="border rounded p-1 bg-gray-100 w-full"
-          id="inputCity"
-          {...register("city")}
+          id="inputCidade"
+          {...register("cidade")}
           value={endereco.cidade || ""}
           readOnly
         />
       </div>
 
       <div className="w-full md:w-3/8 text-start mb-3 p-1">
-        <label htmlFor="inputState" className="form-label text-black">
+        <label htmlFor="inputEstado" className="form-label text-black">
           Estado
         </label>
         <input
           type="text"
           className="border rounded p-1 bg-gray-100 w-full"
-          id="inputState"
-          {...register("state")}
+          id="inputEstado"
+          {...register("estado")}
           value={endereco.estado || ""}
           readOnly
         />
       </div>
 
       <div className="w-full md:w-1/8 text-start mb-3 p-1">
-        <label htmlFor="inputState" className="form-label text-black">
+        <label htmlFor="inputUf" className="form-label text-black">
           UF
         </label>
         <input
           type="text"
           className="border rounded p-1 bg-gray-100 w-full"
-          id="inputState"
+          id="inputUf"
           {...register("uf")}
           value={endereco.uf || ""}
           readOnly
         />
       </div>
 
-      <div className="w-full md:w-1/2 text-left mb-3 p-1">
+      <div className="w-full md:w-4/12 text-left mb-3 p-1">
         <label htmlFor="inputAddress" className="form-label text-black">
           Rua
         </label>
@@ -90,13 +93,27 @@ function AddressSection({ register, errors, setValue }) {
           type="text"
           className="border rounded p-1 bg-gray-100 w-full"
           id="inputAddress"
-          {...register("street")}
+          {...register("logradouro")}
           value={endereco.logradouro || ""}
           readOnly
         />
       </div>
 
       <div className="w-full md:w-4/12 text-left mb-3 p-1">
+        <label htmlFor="inputComplemento" className="form-label text-black">
+          Complemento
+        </label>
+        <input
+          type="text"
+          className="border rounded p-1 bg-gray-100 w-full"
+          id="inputComplemento"
+          {...register("complemento")}
+          value={endereco.complemento || ""}
+          readOnly
+        />
+      </div>
+
+      <div className="w-full md:w-2/12 text-left mb-3 p-1">
         <label htmlFor="inputNeighborhood" className="form-label text-black">
           Bairro
         </label>
@@ -104,7 +121,7 @@ function AddressSection({ register, errors, setValue }) {
           type="text"
           className="border rounded p-1 bg-gray-100 w-full"
           id="inputNeighborhood"
-          {...register("neighborhood")}
+          {...register("bairro")}
           value={endereco.bairro || ""}
           readOnly
         />

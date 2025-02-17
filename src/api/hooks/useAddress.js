@@ -6,11 +6,11 @@ export default function useAddress() {
   const [erroCep, setErroCep] = useState("");
   const [endereco, setEndereco] = useState({
     logradouro: "",
-    complemento: "",
     bairro: "",
-    estado: "",
     cidade: "",
+    estado: "",
     uf: "",
+    complemento: "",
   });
 
   const buscarEndereco = async (novoCep) => {
@@ -24,21 +24,21 @@ export default function useAddress() {
         setErroCep("Endereço não encontrado para o CEP informado.");
         setEndereco({
           logradouro: "",
-          complemento: "",
           bairro: "",
           cidade: "",
           estado: "",
           uf: "",
+          complemento: "",
         });
       } else {
         setErroCep("");
         setEndereco({
           logradouro: dados.logradouro || "",
-          complemento: dados.complemento || "",
           bairro: dados.bairro || "",
           cidade: dados.localidade || "",
           estado: dados.estado || "",
           uf: dados.uf || "",
+          complemento: dados.complemento || "",
         });
       }
     } catch (error) {
