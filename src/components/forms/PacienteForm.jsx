@@ -11,24 +11,7 @@ function PacienteForm() {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm({
-    resolver: zodResolver(pacienteSchema),
-    mode: "all",
-    defaultValues: {
-      name: "",
-      cpf: "",
-      email: "",
-      phone: "",
-      cep: "",
-      logradouro: "",
-      bairro: "",
-      cidade: "",
-      estado: "",
-      addressNumber: "",
-      uf: "",
-      complemento: "",
-    },
-  });
+  } = useForm();
 
   const onSubmit = (formData) => {
     console.log("Form Submitted", formData);
@@ -36,7 +19,7 @@ function PacienteForm() {
 
   return (
     <form
-      className={`flex flex-col gap-8 text-center text-lg-start bg-white shadow p-3 mb-5 rounded`}
+      className={`flex flex-col gap-8 text-center text-lg-start bg-white shadow p-3 mb-5 rounded overflow-y-hidden`}
       id="curriculumForm"
       onSubmit={handleSubmit(onSubmit)}
     >

@@ -15,15 +15,16 @@ export const pacienteSchema = z.object({
   phone: z.string().regex(/^\d{10,11}$/, {
     message: "O telefone deve ter 10 ou 11 dígitos",
   }),
-  street: z.string().min(1, { message: "A rua é obrigatória" }),
-  neighborhood: z.string().min(1, { message: "O bairro é obrigatório" }),
-  city: z.string().min(1, { message: "A cidade é obrigatória" }),
-  state: z.string().length(2, { message: "O estado deve ter 2 letras" }),
-  uf: z.string(),
+  logradouro: z.string().min(1, { message: "A rua é obrigatória" }),
+  cidade: z.string().min(1, { message: "A cidade é obrigatória" }),
+  estado: z.string().length(2, { message: "O estado deve ter 2 letras" }),
   cep: z
     .string()
     .regex(/^\d{8}$/, { message: "O CEP deve ter 8 dígitos numéricos" }),
+  bairro: z.string().min(1, { message: "O bairro é obrigatório" }),
   addressNumber: z
     .string()
     .min(1, { message: "O número do endereço é obrigatório" }),
+  uf: z.string(),
+  complemento: z.string(),
 });

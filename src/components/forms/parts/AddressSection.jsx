@@ -22,7 +22,7 @@ function AddressSection({ register, errors, setValue }) {
         Endereço
       </div>
 
-      <div className="w-full md:w-2/8 text-left mb-3 p-1">
+      <div className="w-full md:w-2/8 text-left mb-3 p-1 min-h-[80px]">
         <label htmlFor="inputZip" className="form-label text-black">
           CEP
         </label>
@@ -37,13 +37,13 @@ function AddressSection({ register, errors, setValue }) {
         />
         {erroCep && <span className="text-danger">{erroCep}</span>}
         {errors.cep && (
-          <span className="text-red-600 text-sm block mt-1">
+          <span className="text-red-600 text-sm block ">
             {errors.cep.message}
           </span>
         )}
       </div>
 
-      <div className="w-full md:w-1/4 text-start mb-3 p-1">
+      <div className="w-full md:w-1/4 text-start mb-3 p-1 min-h-[80px]">
         <label htmlFor="inputCidade" className="form-label text-black">
           Cidade
         </label>
@@ -53,7 +53,6 @@ function AddressSection({ register, errors, setValue }) {
           id="inputCidade"
           {...register("cidade")}
           value={endereco.cidade || ""}
-          readOnly
         />
       </div>
 
@@ -137,11 +136,6 @@ function AddressSection({ register, errors, setValue }) {
           id="inputAddressNumber"
           {...register("addressNumber")}
         />
-        {errors.addressNumber && (
-          <span className="text-red-600 text-sm block mt-1">
-            {errors.addressNumber.message}
-          </span>
-        )}
       </div>
     </div>
   );

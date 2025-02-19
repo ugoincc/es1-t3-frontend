@@ -1,11 +1,5 @@
-import ReceitaForm from "../components/forms/ReceitaForm";
-
 function Receitas() {
-  return (
-    <>
-      <ReceitaForm />
-    </>
-  );
+  return <></>;
 }
 
 export default Receitas;

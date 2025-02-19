@@ -10,6 +10,7 @@ import AppLayout from "./layout/AppLayout";
 import Receitas from "./screens/Receitas";
 import Pacientes from "./screens/Pacientes";
 import Endereços from "./screens/Endereços";
+import PacienteForm from "./components/forms/PacienteForm";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/receitas" element={<Receitas />} />
             <Route path="/pacientes" element={<Pacientes />} />
             <Route path="/enderecos" element={<Endereços />} />
+            <Route path="/cadastrarPaciente" element={<PacienteForm />} />
             <Route path="*" element={<Navigate to="/homepage" replace />} />
           </Route>
         </Routes>
