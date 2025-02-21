@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function useLocalAddress() {
+export function useLocalAddress() {
   const [cep, setCep] = useState("");
   const [erroCep, setErroCep] = useState("");
   const [endereco, setEndereco] = useState({
@@ -16,11 +16,11 @@ export default function useLocalAddress() {
   const buscarEndereco = async (novoCep) => {
     try {
       const response = await axios.get(
-        `https://viacep.com.br/ws/${novoCep}/json/`
+        `http://localhost:8080/MyServicos/RecuperaCep?CEP=${novoCep}`
       );
       const dados = response.data;
 
-      if (dados.erro) {
+      if (!dados || !dados.CEP) {
         setErroCep("Endereço não encontrado para o CEP informado.");
         setEndereco({
           logradouro: "",
@@ -35,10 +35,10 @@ export default function useLocalAddress() {
         setEndereco({
           logradouro: dados.logradouro || "",
           bairro: dados.bairro || "",
-          cidade: dados.localidade || "",
-          estado: dados.estado || "",
-          uf: dados.uf || "",
-          complemento: dados.complemento || "",
+          cidade: dados.cidade || "",
+          estado: "", // Não está presente no novo endpoint
+          uf: "", // Não está presente no novo endpoint
+          complemento: "", // Não está presente no novo endpoint
         });
       }
     } catch (error) {
@@ -68,5 +68,5 @@ export default function useLocalAddress() {
     if (novoCep.length <= 8) setCep(novoCep);
   };
 
-  return { cep, erroCep, endereco, handleCepChange };
+  return { cep, erroCep, endereco, handleCepChange, buscarEndereco };
 }

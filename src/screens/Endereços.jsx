@@ -1,9 +1,7 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import AddressSection from "../components/forms/parts/AddressSection";
-import { addressSchema } from "../components/forms/validation/addressSchema";
+import { useLocalAddress } from "../api/hooks/useLocalAddress";
 
 function Endereços() {
   const {
@@ -13,12 +11,25 @@ function Endereços() {
     formState: { errors },
   } = useForm();
 
+  const { cep, erroCep, endereco, handleCepChange, buscarEndereco } =
+    useLocalAddress();
+
+  const [cepData, setCepData] = useState(null); // Estado para os dados do CEP do banco de dados
+  const [cepInput, setCepInput] = useState(""); // Estado para o input do CEP
+
   const onSubmit = (formData) => {
     console.log("Form Submitted", formData);
   };
 
-  const [cepData, setCepData] = useState(null); // Estado para os dados do CEP do banco de dados
-  const [cepInput, setCepInput] = useState(""); // Estado para o input do CEP
+  const handleBancoBuscaCep = async () => {
+    try {
+      await buscarEndereco(cepInput); // Chama o hook para buscar o endereço
+      setCepData(endereco); // Atualiza o estado com os dados retornados
+    } catch (error) {
+      console.error("Erro ao buscar CEP no banco:", error);
+      setCepData(null); // Limpa o estado em caso de erro
+    }
+  };
 
   return (
     <>
@@ -37,7 +48,6 @@ function Endereços() {
           errors={errors}
           setValue={setValue}
         />
-
         <div className="text-end">
           <button
             type="submit"
@@ -47,6 +57,7 @@ function Endereços() {
           </button>
         </div>
       </form>
+
       <div
         className={`flex flex-col gap-8 text-center text-lg-start bg-white shadow p-3 mb-5 rounded overflow-y-hidden`}
         id="curriculumForm"
@@ -56,7 +67,6 @@ function Endereços() {
             Consulta ao Banco de dados
           </h3>
         </div>
-
         <div className="flex flex-col gap-4">
           <div className="flex gap-4">
             <input
@@ -69,36 +79,34 @@ function Endereços() {
             <button
               type="button"
               className="border rounded p-2 bg-blue-900 text-white"
-              onClick={() => {
-                // Aqui você pode adicionar a lógica para buscar o CEP no banco de dados
-                console.log("Buscar CEP no banco de dados:", cepInput);
-              }}
+              onClick={handleBancoBuscaCep} // Usa a lógica do hook aqui
             >
               Buscar CEP
             </button>
-            {cepData && (
-              <div className="border rounded p-4 bg-gray-50">
-                <h4 className="font-bold text-gray-800 text-xl mb-2">
-                  Dados do CEP
-                </h4>
-                <p>
-                  <strong>CEP:</strong> {cepData.cep}
-                </p>
-                <p>
-                  <strong>Logradouro:</strong> {cepData.logradouro}
-                </p>
-                <p>
-                  <strong>Bairro:</strong> {cepData.bairro}
-                </p>
-                <p>
-                  <strong>Cidade:</strong> {cepData.localidade}
-                </p>
-                <p>
-                  <strong>Estado:</strong> {cepData.uf}
-                </p>
-              </div>
-            )}
           </div>
+          {cepData && (
+            <div className="border rounded p-4 bg-gray-50">
+              <h4 className="font-bold text-gray-800 text-xl mb-2">
+                Dados do CEP
+              </h4>
+              <p>
+                <strong>CEP:</strong> {cepData.cep || cepInput}
+              </p>
+              <p>
+                <strong>Logradouro:</strong> {cepData.logradouro}
+              </p>
+              <p>
+                <strong>Bairro:</strong> {cepData.bairro}
+              </p>
+              <p>
+                <strong>Cidade:</strong> {cepData.cidade}
+              </p>
+              <p>
+                <strong>Estado:</strong> {cepData.uf}
+              </p>
+            </div>
+          )}
+          {erroCep && <p className="text-red-500">{erroCep}</p>}
         </div>
       </div>
     </>
