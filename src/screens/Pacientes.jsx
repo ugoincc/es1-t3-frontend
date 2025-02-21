@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import React from "react";
 import PacienteCard from "../components/PacienteCard";
+import { useAllPacientes } from "../api/hooks/useAllPacientes";
 
 function Pacientes() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState("");
   const [isDebouncing, setIsDebouncing] = useState(false);
-  //const {pacientesResult, loading, error} = usePacienteByQuery(debouncedTerm);
+  const { pacientes, loading, error } = useAllPacientes();
 
   const pacientesResult = [
     { id: 1, nome: "João Silva", cidade: "São Paulo" },
@@ -46,12 +47,12 @@ function Pacientes() {
 
   const renderResults = () => {
     if (isDebouncing) return <>Carrregando...</>;
-    if (pacientesResult && pacientesResult.length === 0)
+    if (pacientes && pacientes.length === 0)
       return (
-        <p className="text-gray-600">Não há vagas com esta descrição...</p>
+        <p className="text-gray-600">Não há pacientes com esta descrição...</p>
       );
-    if (pacientesResult)
-      return pacientesResult.map((paciente) => (
+    if (pacientes)
+      return pacientes.map((paciente) => (
         <PacienteCard key={paciente.id} paciente={paciente} />
       ));
     return null;

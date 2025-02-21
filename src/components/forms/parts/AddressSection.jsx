@@ -18,10 +18,6 @@ function AddressSection({ register, errors, setValue }) {
 
   return (
     <div className="flex flex-wrap">
-      <div className="w-full text-xl font-bold pt-3 border-t text-xl">
-        Endereço
-      </div>
-
       <div className="w-full md:w-2/8 text-left mb-3 p-1 min-h-[80px]">
         <label htmlFor="inputZip" className="form-label text-black">
           CEP
@@ -112,7 +108,7 @@ function AddressSection({ register, errors, setValue }) {
         />
       </div>
 
-      <div className="w-full md:w-2/12 text-left mb-3 p-1">
+      <div className="w-full md:w-4/12 text-left mb-3 p-1">
         <label htmlFor="inputNeighborhood" className="form-label text-black">
           Bairro
         </label>
@@ -126,6 +122,7 @@ function AddressSection({ register, errors, setValue }) {
         />
       </div>
 
+      {/*
       <div className="w-full md:w-2/12 text-left mb-3 p-1">
         <label htmlFor="inputAddressNumber" className="form-label text-black">
           Nº
@@ -137,6 +134,7 @@ function AddressSection({ register, errors, setValue }) {
           {...register("addressNumber")}
         />
       </div>
+          */}
     </div>
   );
 }
