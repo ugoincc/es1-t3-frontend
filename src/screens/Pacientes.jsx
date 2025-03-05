@@ -33,20 +33,17 @@ function Pacientes() {
   };
 
   const renderResults = () => {
+    console.log("Renderizando pacienteData:", pacienteData);
     if (isDebouncing || loading)
-      return <p className="text-blue-500">Carregando dados...</p>;
+      return <p className="text-blue-500">Carregando...</p>;
     if (error) return <p className="text-red-600">{error}</p>;
-    if (Array.isArray(pacienteData) && pacienteData.length === 0) {
-      return (
-        <p className="text-gray-600">Não há pacientes com esta descrição...</p>
-      );
+    if (!Array.isArray(pacienteData) || pacienteData.length === 0) {
+      return <p className="text-gray-600">Nenhum paciente encontrado.</p>;
     }
-    if (Array.isArray(pacienteData)) {
-      return pacienteData.map((paciente) => (
-        <PacienteCard key={paciente.id} paciente={paciente} />
-      ));
-    }
-    return null;
+
+    return pacienteData.map((paciente) => (
+      <PacienteCard key={paciente.idPaciente} paciente={paciente} />
+    ));
   };
 
   return (

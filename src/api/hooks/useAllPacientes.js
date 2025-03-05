@@ -10,7 +10,7 @@ export function useAllPacientes() {
     const fetchPacientes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/ServicosPaciente/paciente"
+          "http://localhost:8080/MyServicos/paciente"
         );
         setPacientes(response.data);
       } catch (err) {

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export function usePacienteByQuery(cpfPaciente) {
-  const [pacienteData, setPacienteData] = useState(null);
+  const [pacienteData, setPacienteData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -10,10 +10,11 @@ export function usePacienteByQuery(cpfPaciente) {
     const fetchPaciente = async () => {
       try {
         const endpoint = cpfPaciente
-          ? `http://localhost:8080/ServicosPaciente/consultarpac?cpfPaciente=${encodeURIComponent(
+          ? `http://localhost:8080/MyServicos/consultarpac?cpfPaciente=${encodeURIComponent(
               cpfPaciente
             )}`
-          : "http://localhost:8080/ServicosPaciente/paciente";
+          : "http://localhost:8080/MyServicos/paciente";
+        console.log(pacienteData);
         const response = await axios.get(endpoint);
         setPacienteData(response.data);
       } catch (err) {
