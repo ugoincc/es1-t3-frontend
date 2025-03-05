@@ -1,0 +1,125 @@
+package unioeste.geral.controller;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+
+import unioeste.apoio.infraestrutura.ConexaoBD;
+import unioeste.geral.endereco.Endereco;
+import unioeste.geral.endereco.dao.UCManterEndereco;
+import unioeste.geral.endereco.dao.UCObterEnderecoPorID;
+import unioeste.geral.endereco.infra.GlobalApp;
+
+@WebServlet(urlPatterns = { "/CadEndereco", "/EndID/*", "/RecuperaPorCep" })
+public class ServLetController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public ServLetController() {
+		super();
+
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+	    String action = request.getServletPath();
+
+	    if (action.equals("/CadEndereco")) {
+	        cadastroEndereco(request, response);
+	    }
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("Estou no doGet");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		response.setHeader("Access-Control-Allow-Headers",
+				"Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+
+		String action = request.getServletPath();
+	    String pathInfo = request.getPathInfo();
+	    if (action.equals("/EndID") && pathInfo != null) {
+	    	String id = pathInfo.substring(1); // Remover o "/"
+	        request.setAttribute("id", id);  // Passa o id para o método
+	        RecuperaEndID(request, response);
+	        System.out.println("quero entrar no ENDID");
+	    }else if(action.equals("RecuperaPorCep")){
+			System.out.println("Entrei no RecuperaCEP");
+		}
+	}
+
+	// Entrada: Request do front contendo elementos que compõe o objeto endereco
+	// Saída: Print de sucesso caso seja possível cadastrar o endereco senao erro
+	protected void cadastroEndereco(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		response.setHeader("Access-Control-Allow-Headers",
+				"Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+
+		BufferedReader reader = request.getReader();
+		Gson gson = new Gson();
+		
+		Endereco end = gson.fromJson(reader, Endereco.class);
+
+
+		// Chama a lógica de cadastro
+		UCManterEndereco service = new UCManterEndereco();
+		try {
+			ConexaoBD conexao = GlobalApp.getConexaoBD();
+			service.cadastrarEndereco(conexao, end);
+
+			// Redireciona para uma página de sucesso
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	protected void RecuperaEndID(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("Entrei no repuraID");
+		String id = request.getParameter("id");
+		System.out.println("Esse é o id" + id);
+		Endereco end = new Endereco();
+		end.setEnderecoID(Integer.parseInt(id));
+
+		UCObterEnderecoPorID UC = new UCObterEnderecoPorID();
+
+		try {
+
+			end = UC.recuperaEnderecoPorID(end);
+
+			// Responder ao cliente
+			Gson gson = new Gson();
+			String enderecoJSON = gson.toJson(end);
+			PrintWriter printWriter = response.getWriter();
+			
+			printWriter.write(enderecoJSON);
+			printWriter.close();
+
+			request.setAttribute("Endereco", enderecoJSON);
+			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			rd.forward(request, response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+
+}

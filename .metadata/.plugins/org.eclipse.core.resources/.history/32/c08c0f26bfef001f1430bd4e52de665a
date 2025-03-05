@@ -1,0 +1,92 @@
+package unioeste.geral.endereco.col;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import unioeste.geral.endereco.Endereco;
+
+
+public class ColEndereco {
+	
+	public ColEndereco() {
+		
+	}
+	
+	//Entrada: Dado o nome do Logradouro busca se já existe
+	//Saida: Id do logradouro que foi recuperado ou criado agora
+	public int obterOuCriarLogradouro(String nome, Connection conexao) throws Exception {
+        int id = buscarIdPorNome("LOGRADOURO", "nome_logradouro", nome, conexao);
+        if (id == -1) {
+            id = inserirEObterId("LOGRADOURO", "nome_logradouro", nome, conexao);
+        }
+        return id;
+    }
+
+    // Função para buscar ou criar Bairro
+    public int obterOuCriarBairro(String nome, Connection conexao) throws Exception {
+        int id = buscarIdPorNome("BAIRRO", "nome_bairro", nome, conexao);
+        if (id == -1) {
+            id = inserirEObterId("BAIRRO", "nome_bairro", nome, conexao);
+        }
+        return id;
+    }
+
+    // Função para buscar ou criar Cidade
+    public int obterOuCriarCidade(String nome, Connection conexaoBD) throws Exception {
+        int id = buscarIdPorNome("CIDADE", "nome_cidade", nome, conexaoBD);
+        if (id == -1) {
+            id = inserirEObterId("CIDADE", "nome_cidade", nome, conexaoBD);
+        }
+        return id;
+    }
+
+    // Entrada: Tabela a ser recuperada, coluna que vai ser usada de regra, nome que vai atuar como parâmetro e conexao.
+    // Saída ID do que estava sendo buscado, ou -1 caso nao exista
+    public int buscarIdPorNome(String tabela, String coluna, String nome, Connection conexao) throws Exception {
+        String sql = "SELECT id_" + tabela.toLowerCase() + " FROM " + tabela + " WHERE " + coluna + " = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, nome);
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                return result.getInt(1);
+            }
+        }
+        return -1; // Não encontrado
+    }
+
+    // Entrada: tabela a receber inserção, coluna a ser analisada, conexao.
+    // Saida: ID do objeto caso consiga cadastrar o objeto, erro se não conseguir cadastrar
+    public int inserirEObterId(String tabela, String coluna, String nome, Connection conexao) throws Exception {
+        String sql = "INSERT INTO " + tabela + " (" + coluna + ") VALUES (?) RETURNING id_" + tabela.toLowerCase();
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, nome);
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                return result.getInt(1);
+            }
+        }
+        throw new Exception("Erro ao inserir na tabela " + tabela);
+    }
+	
+	public void validarEndereco(Endereco end) throws Exception{
+		
+		  	  if (end.getEnderecoID() <= 0 || end.getEnderecoID() > 9999999) {
+		  		 throw new Exception("Endereco inexistente");  
+		  	  }
+		  	  if (end.getBairro() == null) {
+		   		  throw new Exception("Bairro não preenchido");
+		  	  }
+		  	  if (end.getCEP().equals("")) {
+		    		  throw new Exception("Cep deve ser preenchido");
+		  	  }
+		  	  if (end.getCidade() == null) {
+		  		  throw new Exception("Cidade não existe");
+		  	  }
+		  	  if (end.getLogradouro() == null) {
+		  		  throw new Exception("Logradouro não existe");
+		  	  }
+
+		    }
+	}
+

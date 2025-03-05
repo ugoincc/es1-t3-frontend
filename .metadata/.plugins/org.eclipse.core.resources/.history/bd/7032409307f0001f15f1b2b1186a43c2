@@ -1,0 +1,65 @@
+package unioeste.geral.endereco.dao;
+
+import java.sql.ResultSet;
+
+import unioeste.apoio.infraestrutura.ConexaoBD;
+import unioeste.geral.endereco.Bairro;
+import unioeste.geral.endereco.Cidade;
+import unioeste.geral.endereco.Endereco;
+import unioeste.geral.endereco.Logradouro;
+import unioeste.geral.endereco.UnidadeFederativa;
+import unioeste.geral.endereco.infra.GlobalApp;
+
+public class UCObterEnderecoPorID {
+	
+	public UCObterEnderecoPorID(){
+		
+	}
+	
+	//Entrada: Objeto Endereco com ID preenchido.
+	//Saida: Objeto endereco recuperado do BD a partir do ID.
+	public Endereco recuperaEnderecoPorID(Endereco end) throws Exception{
+		
+		ConexaoBD conexaoBD = GlobalApp.getConexaoBD();
+		
+		String sql = "SELECT e.CEP, b.nome_bairro, c.nome_cidade, uf.nome_UF, uf.sigla_UF " +
+	             "FROM Endereco e " +
+	             "LEFT JOIN Bairro b ON e.id_bairro = b.id_bairro " +
+	             "LEFT JOIN Cidade c ON e.id_cidade = c.id_cidade " +
+	             "LEFT JOIN Unidade_Federativa uf ON c.id_UF = uf.id_UF " +
+	             "WHERE e.id_endereco = " + end.getEnderecoID();
+
+	ResultSet result = conexaoBD.execSelect(sql);
+
+		
+		
+		if (result.next()) {
+			  UnidadeFederativa uf = new UnidadeFederativa();
+			  Cidade cidade = new Cidade();
+			  Bairro bairro = new Bairro();
+			  Logradouro log = new Logradouro();
+			  
+			  end.setCEP(result.getString("cep"));
+			  bairro.setNome(result.getString("nome_bairro"));
+			  cidade.setNome(result.getString("nome_cidade"));
+			  log.setNome(result.getString("nome_logradouro"));
+			  uf.setNome(result.getString("nome_uf"));
+			  uf.setSigla(result.getString("sigla_uf"));
+			  cidade.setEstado(uf);
+			  
+			  end.setBairro(bairro.getNome());
+			  end.setLogradouro(log.getNome());
+			  end.setCidade(cidade.getNome());
+		}
+			result.close();
+		
+		if (end.getCEP() == null) {
+			throw new Exception ("Endereco não existe");
+		}
+		
+		return end;
+
+	}
+	
+}
+	

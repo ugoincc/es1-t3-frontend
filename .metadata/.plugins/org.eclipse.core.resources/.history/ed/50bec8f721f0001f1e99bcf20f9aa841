@@ -1,0 +1,50 @@
+package unioeste.geral.paciente.infra;
+
+import unioeste.apoio.infraestrutura.ConexaoBD;
+import unioeste.apoio.infraestrutura.UsuarioBD;
+
+
+public class GlobalApp {
+
+  private static UsuarioBD usuarioBanco;
+  private static ConexaoBD conexaoBD = null;
+ 
+  public GlobalApp() {
+  }
+
+  public static void setUsuarioBanco (UsuarioBD ub) {
+     usuarioBanco = ub;
+  }
+
+  public static UsuarioBD getUsuarioBanco () {
+     return usuarioBanco;
+  }
+
+  public static void setConexaoBD (ConexaoBD conexao) {
+     conexaoBD = conexao;
+  }
+  
+  // Cria a conexao com o BD usando meus dados
+  public static ConexaoBD getConexaoBD () throws Exception  {
+	  if (conexaoBD == null) {
+          conexaoBD = new ConexaoBD();
+          UsuarioBD usuario = new UsuarioBD();
+          usuario.setSenha(" ");
+          usuario.setBanco("ReceitaMedica");
+          usuario.setUsuario("postgres");
+          conexaoBD.conectar(usuario);
+       }
+	  return conexaoBD;
+  }
+
+   public void testeConexao() {
+	   try {
+		   ConexaoBD conn = getConexaoBD();
+		   System.out.println(conn);
+		   conn.close();
+	   }catch(Exception e){
+		   System.out.println(e);
+	   }
+   }
+
+}

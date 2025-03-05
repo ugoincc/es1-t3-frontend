@@ -1,0 +1,45 @@
+package unioeste.geral.endereco.dao;
+
+import java.sql.ResultSet;
+
+import unioeste.apoio.infraestrutura.ConexaoBD;
+import unioeste.geral.endereco.Cidade;
+import unioeste.geral.endereco.UnidadeFederativa;
+import unioeste.geral.endereco.infra.GlobalApp;
+
+public class UCObterCidade {
+	
+	public UCObterCidade(){
+		
+	}
+	
+	//Entrada: Nome da cidade a ser recuperada
+	//Saída: Objeto cidade recuperado do BD a partir do nome.
+	public Cidade recuperaCidadePorNome(String nomeCidade) throws Exception{
+		
+		Cidade cidade = null;
+		
+		ConexaoBD conexaoBD = GlobalApp.getConexaoBD();
+		
+		ResultSet result = conexaoBD.execSelect("SELECT * FROM CIDADE WHERE nome_cidade = " + nomeCidade);
+		
+		if (result.next()) {
+			  UnidadeFederativa uf = new UnidadeFederativa();
+			  cidade = new Cidade();
+			  cidade.setCodCidade(result.getInt("id_cidade"));
+			  cidade.setNome(result.getString("nome_cidade"));
+			  uf.setNome(result.getString("nome_uf"));
+			  uf.setSigla(result.getString("sigla_uf"));
+			  cidade.setEstado(uf);
+		}
+			result.close();
+		
+		if (cidade == null) {
+			throw new Exception ("Cidade não existe");
+		}
+		
+		return cidade;
+	}
+	
+	
+}

@@ -1,0 +1,59 @@
+package unioeste.geral.endereco.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+import unioeste.apoio.infraestrutura.ConexaoBD;
+import unioeste.geral.endereco.Endereco;
+import unioeste.geral.endereco.col.ColEndereco;
+
+public class UCManterEndereco {
+
+	public UCManterEndereco(){
+		
+	}
+	//Entrada Objeto endereco completo, totalmente preenchido
+	//Saida: Print se deu certo, ou erro caso não consiga cadastrar.
+	public void cadastrarEndereco(ConexaoBD conexaoBD ,Endereco end) throws Exception {
+        if (end == null) {
+            throw new IllegalArgumentException("O endereço não pode ser nulo.");
+        }
+
+        try {
+        	ColEndereco col = new ColEndereco();
+            // Obter ou criar IDs
+            int idLogradouro = col.obterOuCriarLogradouro(end.getLogradouro(), conexaoBD.getConnection());
+            int idBairro = col.obterOuCriarBairro(end.getBairro(), conexaoBD.getConnection());
+            int idCidade = col.obterOuCriarCidade(end.getCidade(), conexaoBD.getConnection());
+            
+            String sql = "INSERT INTO ENDERECO (cep, id_logradouro, id_bairro, id_cidade) VALUES (?, ?, ?, ?)";
+            
+            try (Connection conn = conexaoBD.getConnection()) {
+            	PreparedStatement stmt = conn.prepareStatement(sql);
+            	
+                stmt.setString(1, end.getCEP());
+                stmt.setInt(2, idLogradouro);
+                stmt.setInt(3, idBairro);
+                stmt.setInt(4, idCidade);
+                
+                int linhasAfetadas = stmt.executeUpdate();
+
+                if (linhasAfetadas == 0) {
+                    throw new Exception("Falha ao cadastrar o endereço.");
+                }
+                System.out.println("Endereço cadastrado com sucesso!");
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Erro ao cadastrar o endereço: " + e.getMessage());
+		
+        }
+		
+		
+		
+	}
+
+
+
+}
