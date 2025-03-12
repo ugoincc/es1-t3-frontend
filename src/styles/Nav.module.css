@@ -1,0 +1,18 @@
+.navLink {
+  font-family: monospace;
+  width: 33%;
+  margin: 0 1rem;
+  text-align: center;
+  color: #4a5568;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+  font-size: large;
+}
+
+.navLink:hover {
+  color: #0350c3;
+}
+
+.active {
+  font-weight: bold;
+}

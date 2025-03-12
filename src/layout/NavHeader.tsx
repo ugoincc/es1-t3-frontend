@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { navPages } from "./navData/NavBarPages";
 import logo from "../assets/pill.png";
+import styles from "../styles/Nav.module.css";
 
 function NavHeader() {
   const navigate = useNavigate();
@@ -26,8 +27,8 @@ function NavHeader() {
               e.preventDefault();
               handleNavigation(val.link);
             }}
-            className={`font-mono w-1/3 mx-4 text-center text-gray-700 hover:text-gray-600 no-undeline ${
-              window.location.pathname === val.link ? "font-bold" : ""
+            className={`${styles.navLink} ${
+              window.location.pathname === val.link ? styles.active : ""
             }`}
           >
             {val.title}
