@@ -1,7 +1,5 @@
 import React from "react";
-import { pacienteSchema } from "./validation/pacienteSchema";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import PersonalDataSection from "./parts/PersonalDataSection";
 import AddressSection from "./parts/AddressSection";
 
