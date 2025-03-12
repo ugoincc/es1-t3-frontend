@@ -1,5 +1,8 @@
 import React from "react";
+import { useState } from "react";
 function PersonalDataSection({ register, errors }) {
+  const [sexo, setSexo] = useState("masculino");
+
   return (
     <>
       <div className="flex flex-wrap">
@@ -58,7 +61,7 @@ function PersonalDataSection({ register, errors }) {
           )}
         </div>
 
-        <div className="w-full md:w-3/4 text-left mb-3 p-1">
+        <div className="w-full md:w-1/4 text-left mb-3 p-1">
           <label htmlFor="inputEmail" className="form-label text-black">
             E-mail
           </label>
@@ -73,6 +76,39 @@ function PersonalDataSection({ register, errors }) {
               {errors.email.message}
             </span>
           )}
+        </div>
+        <div className="w-full md:w-1/4 text-left mb-3 p-1">
+          <label htmlFor="inputEmail" className="form-label text-black">
+            Nascimento
+          </label>
+          <input
+            type="datetime-local"
+            className="border rounded p-1 bg-gray-100 w-full"
+            id="inputBirthday"
+          />
+        </div>
+        <div className="w-full flex items-center justify-around md:w-1/4 text-left mb-3 p-1">
+          <label>
+            <input
+              type="radio"
+              name="sexo"
+              value="masculino"
+              checked={sexo === "masculino"}
+              onChange={(e) => setSexo(e.target.value)}
+            />
+            Masculino
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="sexo"
+              value="feminino"
+              checked={sexo === "feminino"}
+              onChange={(e) => setSexo(e.target.value)}
+            />
+            Feminino
+          </label>
         </div>
       </div>
     </>
