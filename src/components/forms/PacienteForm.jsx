@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import PersonalDataSection from "./parts/PersonalDataSection";
 import AddressSection from "./parts/AddressSection";
+import axios from "axios";
 
 function PacienteForm() {
   const {
@@ -11,13 +12,69 @@ function PacienteForm() {
     formState: { errors },
   } = useForm();
 
+  const postPaciente = async (requestBody) => {
+    const apiUrl = "http://localhost:8080/MyServicos/insertpac";
+
+    try {
+      const response = await axios.post(apiUrl, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        console.log("Paciente cadastrado com sucesso!", response.data);
+      }
+    } catch (error) {
+      console.error("Erro ao cadastrar paciente:", error);
+    }
+  };
+
   const onSubmit = (formData) => {
-    console.log("Form Submitted", formData);
+    const requestBody = {
+      nome: formData.name,
+      cpf: formData.cpf,
+      endereco: {
+        cep: formData.cep,
+        logradouro: {
+          tipoLogradouro: formData.tipoLogradouro,
+          nomeLogradouro: formData.logradouro,
+          siglaLogradouro: formData.siglaLogradouro,
+        },
+        bairro: {
+          nomeBairro: formData.bairro,
+        },
+        cidade: {
+          nomeCidade: formData.cidade,
+          unidadeFederativa: {
+            siglaUF: formData.uf,
+            nomeUF: formData.estado,
+          },
+        },
+        numeroCasa: formData.numeroCasa,
+        complementoCasa: formData.complementoCasa,
+      },
+      telefones: [
+        {
+          ddi: formData.ddi,
+          ddd: formData.ddd,
+          numero: formData.phone,
+        },
+      ],
+      emails: [
+        {
+          email: formData.email,
+        },
+      ],
+    };
+
+    console.log("Form Submitted", requestBody);
+    postPaciente(requestBody);
   };
 
   return (
     <form
-      className={`flex flex-col gap-8 text-center text-lg-start bg-white shadow p-3 mb-5 rounded overflow-y-hidden`}
+      className={`flex flex-col gap-2 text-center text-lg-start bg-white shadow p-3 mb-5 rounded overflow-y-scroll`}
       id="curriculumForm"
       onSubmit={handleSubmit(onSubmit)}
     >

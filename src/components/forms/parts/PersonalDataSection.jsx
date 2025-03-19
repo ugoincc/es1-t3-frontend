@@ -41,16 +41,30 @@ function PersonalDataSection({ register, errors }) {
           )}
         </div>
 
-        <div className="w-full md:w-1/4 text-left mb-3 p-1 min-h-[80px]">
+        <div className="w-full md:w-2/4 text-left mb-3 p-1 min-h-[80px]">
           <label htmlFor="inputPhone" className="form-label text-black">
             Telefone
           </label>
-          <input
-            type="number"
-            className="border rounded p-1 bg-gray-100 w-full"
-            id="inputPhone"
-            {...register("phone")}
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              className="border rounded p-1 bg-gray-100 w-full"
+              placeholder="DDD"
+              {...register("ddd")}
+            />
+            <input
+              type="text"
+              className="border rounded p-1 bg-gray-100 w-full"
+              placeholder="DDI"
+              {...register("ddi")}
+            />
+            <input
+              type="text"
+              className="border rounded p-1 bg-gray-100 w-full"
+              placeholder="Número"
+              {...register("phone")}
+            />
+          </div>
           {errors.phone && (
             <span className="text-red-600 text-sm block">
               {errors.phone.message}
@@ -58,14 +72,13 @@ function PersonalDataSection({ register, errors }) {
           )}
         </div>
 
-        <div className="w-full md:w-3/4 text-left mb-3 p-1">
+        <div className="w-full md:w-2/4 text-left mb-3 p-1">
           <label htmlFor="inputEmail" className="form-label text-black">
             E-mail
           </label>
           <input
             type="email"
             className="border rounded p-1 bg-gray-100 w-full"
-            id="inputEmail"
             {...register("email")}
           />
           {errors.email && (

@@ -14,8 +14,8 @@ function Endereços() {
   const { cep, erroCep, endereco, handleCepChange, buscarEndereco } =
     useLocalAddress();
 
-  const [cepData, setCepData] = useState(null); // Estado para os dados do CEP do banco de dados
-  const [cepInput, setCepInput] = useState(""); // Estado para o input do CEP
+  const [cepData, setCepData] = useState(null);
+  const [cepInput, setCepInput] = useState("");
 
   const onSubmit = (formData) => {
     console.log("Form Submitted", formData);

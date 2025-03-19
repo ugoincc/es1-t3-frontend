@@ -11,8 +11,8 @@ const ChatBot = () => {
   const SYSTEM_CONTEXT =
     "Você é um assistente virtual gentil integrado a um sistema seguro e já autenticado. " +
     "O sistema já está logado e seguro, portanto, não solicite autenticação. " +
-    "Os serviços disponíveis são: paciente, olá mundo, endereço (por CEP ou ID), cidade. " +
-    "Se um serviço for acionado, responda 'Demonstrando resultado de [serviço]'. " +
+    "Os serviços disponíveis são: paciente, endereço (por CEP ou ID) " +
+    "Se um serviço for acionado, responda 'Resultado: [serviço]'. " +
     "Evite responder perguntas irrelevantes.";
 
   const sendMessage = async () => {
@@ -21,7 +21,7 @@ const ChatBot = () => {
     const userMessage = { text: `${input}`, type: "user" };
     setMessages((prev) => [...prev, userMessage]);
 
-    setInput(""); // Limpa input após enviar mensagem
+    setInput("");
 
     const MENSAGEM_CONTEXTO_USER = SYSTEM_CONTEXT + input;
 
@@ -63,24 +63,22 @@ const ChatBot = () => {
     let requestData = {};
 
     if (responseText.toLowerCase().includes("paciente")) {
-      apiUrl = "http://localhost:8080/Server2/ObterPacientes";
-    } else if (responseText.toLowerCase().includes("olá mundo")) {
-      apiUrl = "http://localhost:8080/Server2/OlaMundo";
+      apiUrl = "http://localhost:8080/MyServicos/paciente";
     } else if (
       responseText.toLowerCase().includes("endereço") &&
       responseText.toLowerCase().includes("cep")
     ) {
       const cep = prompt("Digite o CEP:");
-      apiUrl = `http://localhost:8080/Server2/ObterEnderecoPorCEP?cep=${cep}`;
+      apiUrl = `http://localhost:8080/MyServicos/RecuperaPorCep/${cep}`;
     } else if (
       responseText.toLowerCase().includes("endereço") &&
       responseText.toLowerCase().includes("id")
     ) {
       const id = prompt("Digite o ID do endereço:");
-      apiUrl = `http://localhost:8080/Server2/ObterEnderecoPorID?id=${id}`;
+      apiUrl = `http://localhost:8080/MyServicos/EndID/${id}`;
     } else if (responseText.toLowerCase().includes("cidade")) {
       const id = prompt("Digite o ID da cidade:");
-      apiUrl = `http://localhost:8080/Server2/ObterCidade?id=${id}`;
+      apiUrl = `http://localhost:8080/MyServicos/ObterCidade/${id}`;
     } else if (responseText.toLowerCase().includes("cadastrar paciente")) {
       requestData = {
         nome_paciente: prompt("Nome do paciente:"),
@@ -91,7 +89,7 @@ const ChatBot = () => {
         data_nascimento_paciente: prompt("Data de nascimento (YYYY-MM-DD):"),
         cep: prompt("CEP:"),
       };
-      apiUrl = "http://localhost:8080/Server2/CadastrarPaciente";
+      apiUrl = "http://localhost:8080/MyServicos/insertpac";
       postRequest(apiUrl, requestData);
       return;
     } else if (responseText.toLowerCase().includes("cadastrar endereço")) {
@@ -108,7 +106,7 @@ const ChatBot = () => {
         nome_tipo_logradouro: prompt("Nome do Tipo de Logradouro:"),
         cep: prompt("CEP:"),
       };
-      apiUrl = "http://localhost:8080/Server2/CadastrarEndereco";
+      apiUrl = "http://localhost:8080/MyServicos/CadEndereco";
       postRequest(apiUrl, requestData);
       return;
     }
