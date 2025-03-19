@@ -1,5 +1,4 @@
 import React from "react";
-
 function PacienteCard({ paciente }) {
   return (
     <div className="border border-2 border-gray-300 flex flex-col sm:flex-row gap-4 text-center rounded-lg p-4 my-2 shadow-md">
@@ -17,12 +16,6 @@ function PacienteCard({ paciente }) {
         </p>
         <p>
           <strong>Endereço ID:</strong> {paciente.idEndereco}
-        </p>
-        <p>
-          <strong>Número da Casa:</strong> {paciente.nroCasa}
-        </p>
-        <p>
-          <strong>Complemento:</strong> {paciente.complementoCasa}
         </p>
       </div>
     </div>

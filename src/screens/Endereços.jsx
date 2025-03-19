@@ -38,6 +38,8 @@ function Endereços() {
         id="curriculumForm"
         onSubmit={handleSubmit(onSubmit)}
       >
+        {/*
+
         <div className="w-full text-center">
           <h3 className="font-bold text-gray-800 text-2xl">
             Consulta Externa 'ViaCEP'
@@ -56,6 +58,7 @@ function Endereços() {
             Registrar Endereço
           </button>
         </div>
+        */}
       </form>
 
       <div

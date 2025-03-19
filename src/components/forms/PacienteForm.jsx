@@ -13,7 +13,7 @@ function PacienteForm() {
   } = useForm();
 
   const postPaciente = async (requestBody) => {
-    const apiUrl = "http://localhost:8080/MyServicos/insertpac";
+    const apiUrl = "http://localhost:8080/MyServicos/CadastroPaciente";
 
     try {
       const response = await axios.post(apiUrl, requestBody, {

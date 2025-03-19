@@ -50,11 +50,14 @@ function ReceitaForm() {
     console.log(receitaData);
 
     try {
-      const response = await fetch("http://localhost:3000/api/receitas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(receitaData),
-      });
+      const response = await fetch(
+        "http://localhost:8080/MyServicos/insertRec",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(receitaData),
+        }
+      );
 
       if (!response.ok) throw new Error("Erro ao cadastrar receita");
 

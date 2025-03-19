@@ -69,7 +69,7 @@ const ChatBot = () => {
       responseText.toLowerCase().includes("cep")
     ) {
       const cep = prompt("Digite o CEP:");
-      apiUrl = `http://localhost:8080/MyServicos/RecuperaPorCep/${cep}`;
+      apiUrl = `http://localhost:8080/MyServicos/RecuperaPorCep?CEP=${cep}`;
     } else if (
       responseText.toLowerCase().includes("endereço") &&
       responseText.toLowerCase().includes("id")
@@ -89,7 +89,7 @@ const ChatBot = () => {
         data_nascimento_paciente: prompt("Data de nascimento (YYYY-MM-DD):"),
         cep: prompt("CEP:"),
       };
-      apiUrl = "http://localhost:8080/MyServicos/insertpac";
+      apiUrl = "http://localhost:8080/MyServicos/CadastroPaciente";
       postRequest(apiUrl, requestData);
       return;
     } else if (responseText.toLowerCase().includes("cadastrar endereço")) {

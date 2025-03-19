@@ -9,14 +9,12 @@ export function useLocalAddress() {
     bairro: "",
     cidade: "",
     estado: "",
-    uf: "",
-    complemento: "",
   });
 
   const buscarEndereco = async (novoCep) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/MyServicos/RecuperaCep?CEP=${novoCep}`
+        `http://localhost:8080/MyServicos/RecuperaPorCep?CEP=${novoCep}`
       );
       const dados = response.data;
 
@@ -27,18 +25,14 @@ export function useLocalAddress() {
           bairro: "",
           cidade: "",
           estado: "",
-          uf: "",
-          complemento: "",
         });
       } else {
         setErroCep("");
         setEndereco({
-          logradouro: dados.logradouro || "",
-          bairro: dados.bairro || "",
-          cidade: dados.cidade || "",
-          estado: "", // Não está presente no novo endpoint
-          uf: "", // Não está presente no novo endpoint
-          complemento: "", // Não está presente no novo endpoint
+          logradouro: dados.logradouro?.nome || "",
+          bairro: dados.bairro?.nome || "",
+          cidade: dados.cidade?.nome || "",
+          estado: dados.cidade?.estado?.nome || "",
         });
       }
     } catch (error) {
@@ -54,11 +48,9 @@ export function useLocalAddress() {
       setErroCep("");
       setEndereco({
         logradouro: "",
-        complemento: "",
         bairro: "",
-        estado: "",
         cidade: "",
-        uf: "",
+        estado: "",
       });
     }
   }, [cep]);

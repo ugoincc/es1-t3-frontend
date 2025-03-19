@@ -12,6 +12,7 @@ import Pacientes from "./screens/Pacientes";
 import Endereços from "./screens/Endereços";
 import PacienteForm from "./components/forms/PacienteForm";
 import ChatBot from "./screens/ChatBot";
+import ReceitaForm from "./components/forms/ReceitaForm";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route element={<AppLayout />}>
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/chatbot" element={<ChatBot />} />
+            <Route path="/cadastrarReceita" element={<ReceitaForm />} />
 
             <Route path="/receitas" element={<Receitas />} />
             <Route path="/pacientes" element={<Pacientes />} />
