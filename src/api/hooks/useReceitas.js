@@ -13,15 +13,22 @@ export function useReceitas(cpfPaciente) {
           cpfPaciente
         )}`;
         const response = await axios.get(endpoint);
-        setReceitas(response.data);
+
+        if (response.status === 200) {
+          setReceitas(response.data);
+        } else {
+          setError("Erro ao carregar receitas.");
+        }
       } catch (err) {
-        setError(err.message || "Erro ao carregar pacientes");
+        setError(err.message || "Erro ao carregar receitas.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchReceitas();
+    if (cpfPaciente) {
+      fetchReceitas();
+    }
   }, [cpfPaciente]);
 
   return { receitas, loading, error };

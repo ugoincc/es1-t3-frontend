@@ -42,7 +42,7 @@ function Receitas() {
     }
 
     return receitasArray.map((receita) => (
-      <ReceitaCard key={receita.num_receita} receita={receita} />
+      <ReceitaCard key={key} receita={receita} />
     ));
   };
 
