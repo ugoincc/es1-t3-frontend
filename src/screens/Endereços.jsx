@@ -79,7 +79,7 @@ function Endereços() {
             <button
               type="button"
               className="border rounded p-2 bg-blue-900 text-white"
-              onClick={handleBancoBuscaCep} // Usa a lógica do hook aqui
+              onClick={handleBancoBuscaCep}
             >
               Buscar CEP
             </button>
