@@ -35,11 +35,15 @@ function Receitas() {
   const renderResults = () => {
     if (loading) return <p className="text-blue-500">Carregando...</p>;
     if (error) return <p className="text-red-600">{error}</p>;
-    if (!Array.isArray(receitas) || receitas.length === 0) {
-      return <p className="text-gray-600">Nenhum paciente encontrado.</p>;
+
+    const receitasArray = Array.isArray(receitas) ? receitas : [receitas];
+    if (receitasArray.length === 0) {
+      return <p className="text-gray-600">Nenhuma receita encontrada.</p>;
     }
 
-    return receitas.map((receita) => <ReceitaCard receita={receita} />);
+    return receitasArray.map((receita) => (
+      <ReceitaCard key={receita.num_receita} receita={receita} />
+    ));
   };
 
   return (

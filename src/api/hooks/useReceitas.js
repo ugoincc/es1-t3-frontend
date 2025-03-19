@@ -22,7 +22,7 @@ export function useReceitas(cpfPaciente) {
     };
 
     fetchReceitas();
-  }, []);
+  }, [cpfPaciente]);
 
   return { receitas, loading, error };
 }

@@ -7,11 +7,11 @@ function AddressSection({ register, errors, setValue }) {
   useEffect(() => {
     if (cep && endereco) {
       setValue("cep", cep);
-      setValue("logradouro", endereco.logradouro);
-      setValue("bairro", endereco.bairro);
-      setValue("cidade", endereco.cidade);
-      setValue("estado", endereco.estado);
-      setValue("uf", endereco.uf);
+      setValue("logradouro", endereco.logradouro?.nome);
+      setValue("bairro", endereco.bairro?.nome);
+      setValue("cidade", endereco.cidade?.nome);
+      setValue("estado", endereco.estado?.nome);
+      setValue("uf", endereco.uf?.nome);
       setValue("complemento", endereco.complemento);
     }
   }, [cep, endereco, setValue]);
