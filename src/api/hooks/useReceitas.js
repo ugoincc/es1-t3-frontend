@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export function useReceitas() {
+export function useReceitas(cpfPaciente) {
   const [receitas, setReceitas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,9 +9,10 @@ export function useReceitas() {
   useEffect(() => {
     const fetchReceitas = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/MyServicos/receitas"
-        );
+        const endpoint = `http://localhost:8080/MyServicos/BuscarReceita?cpf=${encodeURIComponent(
+          cpfPaciente
+        )}`;
+        const response = await axios.get(endpoint);
         setReceitas(response.data);
       } catch (err) {
         setError(err.message || "Erro ao carregar pacientes");

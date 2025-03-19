@@ -7,8 +7,27 @@ import useReceitas from "../api/hooks/useReceitas";
 
 function Receitas() {
   const navigate = useNavigate();
-  const { receitas, loading, error } = useReceitas();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedTerm, setDebouncedTerm] = useState("");
+  const [isDebouncing, setIsDebouncing] = useState(false);
+  const { receitas, loading, error } = useReceitas(debouncedTerm);
 
+  useEffect(() => {
+    if (searchTerm) {
+      setIsDebouncing(true);
+    }
+
+    const debounceTimer = setTimeout(() => {
+      setDebouncedTerm(searchTerm);
+      setIsDebouncing(false);
+    }, 1200);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm]);
+
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
   const handleNavigation = (path) => {
     if (path) navigate(path);
   };
@@ -20,7 +39,7 @@ function Receitas() {
       return <p className="text-gray-600">Nenhum paciente encontrado.</p>;
     }
 
-    return receitas.map((receita) => <>Receita</>);
+    return receitas.map((receita) => <ReceitaCard receita={receita} />);
   };
 
   return (
@@ -42,7 +61,17 @@ function Receitas() {
         <form
           className="align-items-center w-full"
           onSubmit={(e) => e.preventDefault()}
-        ></form>
+        >
+          {" "}
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleInputChange}
+            placeholder="Busque por receitas pelo CPF..."
+            aria-label="Campo de busca de receitas"
+            className="w-full p-2 border rounded"
+          />
+        </form>
 
         <div className="cardlist border border-2 border-gray-300 rounded-lg h-full overflow-y-scroll">
           <section className="p-2">{renderResults()}</section>
